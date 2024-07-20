@@ -38,6 +38,8 @@ To set up and run this application, follow these steps:
    git clone https://github.com/rchvingt/nodejs-express-mysql.git
 
 2. **Set up the database:**
+    
+    
     This project includes a pre-configured MySQL database that is located in the root directory of the project. Follow these steps to set up and use the provided database:
 
     **Locate the Database File** 
