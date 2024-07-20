@@ -46,19 +46,9 @@ To set up and run this application, follow these steps:
 
     ### 2. **Create the Database**
 
-    Before importing the SQL file, you need to create a new database where the provided SQL file will be imported. You can do this using the MySQL command line:
-
-    1. **Open Command Line Interface:**
-    - **On macOS/Linux:** Open Terminal.
-    - **On Windows:** Open Command Prompt or PowerShell.
-
-    2. **Run the Following Command to Create a Database:**
-
-    ```sql
-   CREATE DATABASE my_database;```
-
+    Before importing the SQL file, you need to create a new database where the provided SQL file will be imported. 
    
-
+    ### 3. **Change config of the Database**
     The database configuration is managed in the `app/config/db.config.js` file. This file contains the necessary settings to connect to your MySQL database. 
     Open the `app/config/db.config.js` file and update the following settings according to your database setup:
 
