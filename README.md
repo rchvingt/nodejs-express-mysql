@@ -40,11 +40,11 @@ To set up and run this application, follow these steps:
 2. **Set up the database:**
     This project includes a pre-configured MySQL database that is located in the root directory of the project. Follow these steps to set up and use the provided database:
 
-    ### 1. **Locate the Database File**
+    **Locate the Database File** 
 
     In the root directory of the project, you will find a SQL file named `calendar_app.sql`. This file contains the schema and data for the database.
 
-    ### 2. **Create the Database**
+    **Create the Database** 
 
     Before importing the SQL file, you need to create a new database where the provided SQL file will be imported. Run the Following Command to Create a Database: 
 
@@ -54,7 +54,7 @@ To set up and run this application, follow these steps:
 
     
    
-    ### 3. **Change config of the Database**
+    **Change config of the Database**
     The database configuration is managed in the `app/config/db.config.js` file. This file contains the necessary settings to connect to your MySQL database. 
     Open the `app/config/db.config.js` file and update the following settings according to your database setup:
 
