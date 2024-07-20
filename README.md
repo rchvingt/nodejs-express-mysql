@@ -55,8 +55,9 @@ To set up and run this application, follow these steps:
     
    
     **Change config of the Database**
-    The database configuration is managed in the `app/config/db.config.js` file. This file contains the necessary settings to connect to your MySQL database. 
-    Open the `app/config/db.config.js` file and update the following settings according to your database setup:
+
+    
+    The database configuration is managed in the `app/config/db.config.js` file. This file contains the necessary settings to connect to your MySQL database. Open the `app/config/db.config.js` file and update the following settings according to your database setup:
 
     ```javascript
     module.exports = {
