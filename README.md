@@ -55,7 +55,7 @@ To set up and run this application, follow these steps:
     2. **Run the Following Command to Create a Database:**
 
     ```sql
-   CREATE DATABASE my_database;
+   CREATE DATABASE my_database;```
 
    
 
