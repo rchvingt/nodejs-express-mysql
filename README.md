@@ -46,7 +46,12 @@ To set up and run this application, follow these steps:
 
     ### 2. **Create the Database**
 
-    Before importing the SQL file, you need to create a new database where the provided SQL file will be imported. 
+    Before importing the SQL file, you need to create a new database where the provided SQL file will be imported. Run the Following Command to Create a Database: 
+
+   ```sql
+   CREATE DATABASE my_database;
+    ```
+
     
    
     ### 3. **Change config of the Database**
