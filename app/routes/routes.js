@@ -12,6 +12,9 @@ module.exports = app => {
   // Retrieve a single events calendar with id
   router.get("/:id", eventcal.findOne);
 
+   // Retrieve events by user ID
+   router.get("/user/:userId", eventcal.findByUserIds);
+
   // Update a events calendar with id
   router.put("/:id", eventcal.update);
 

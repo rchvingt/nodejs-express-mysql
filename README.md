@@ -29,7 +29,7 @@ To set up and run this application, follow these steps:
 ### Prerequisites
 
 - **Node.js:** Ensure Node.js is installed. You can download it from [nodejs.org](https://nodejs.org/).
-- **MySQL:** Ensure MySQL is installed and running. You can download it from [mysql.com](https://www.mysql.com/).
+- **MySQL:** Ensure MySQL is installed and running. You can download it from [mysql.com](https://dev.mysql.com/downloads/mysql/).
 
 ### Steps
 

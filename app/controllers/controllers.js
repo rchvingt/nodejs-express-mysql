@@ -81,6 +81,54 @@ exports.findOne = (req, res) => {
 };
 
 
+
+exports.findByUserIds = (req, res) => {
+  const userIds = req.query.userIds;
+
+  if (!userIds) {
+    res.status(400).send({
+      status: false,
+      message: "No userIDs provided."
+    });
+    return;
+  }
+
+  const userIdArray = userIds.split(',').map(id => parseInt(id, 10)).filter(id => !isNaN(id));
+
+  if (userIdArray.length === 0) {
+    res.status(400).send({
+      status: false,
+      message: "Invalid userIDs provided."
+    });
+    return;
+  }
+
+  EventCal.findByUserIds(userIdArray, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          status: false,
+          message: `No events found for user IDs ${userIds}.`
+        });
+      } else {
+        res.status(500).send({
+          status: false,
+          message: "Error retrieving events for user IDs " + userIds
+        });
+      }
+    } else {
+      res.status(200).send({
+        success: true,
+        message: "Events found",
+        data
+      });
+    }
+  });
+};
+
+
+
+
 // Update a events calendar identified by the id in the request
 exports.update = (req, res) => {
   // Validate Request
