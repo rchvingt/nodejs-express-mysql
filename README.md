@@ -46,17 +46,24 @@ To set up and run this application, follow these steps:
 
     **Create the Database** 
 
-    Before importing the SQL file, you need to create a new database where the provided SQL file will be imported. Run the Following Command to Create a Database: 
+    Before importing the SQL file, you need to create a new database where the provided SQL file will be imported. Run the following fommand to create a database: 
 
    ```sql
    CREATE DATABASE my_database;
     ```
 
+
+    After running the SQL script, you can verify that the tables were created correctly by logging into MySQL and using the following commands:
+
+    ```sql
+    USE my_database;
+    SHOW TABLES;
+    ```
     
    
     **Change config of the Database**
 
-    
+
     The database configuration is managed in the `app/config/db.config.js` file. This file contains the necessary settings to connect to your MySQL database. Open the `app/config/db.config.js` file and update the following settings according to your database setup:
 
     ```javascript
