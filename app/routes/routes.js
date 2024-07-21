@@ -1,26 +1,28 @@
-module.exports = app => {
-  const eventcal = require("../controllers/controllers.js");
+module.exports = (app) => {
+	const eventcal = require("../controllers/controllers.js");
 
-  var router = require("express").Router();
+	var router = require("express").Router();
 
-  // Create a new events calendar
-  router.post("/", eventcal.create);
+	// Create a new events calendar
+	router.post("/", eventcal.create);
 
-  // Retrieve all events calendar
-  router.get("/", eventcal.findAll);
+	// Retrieve all events calendar
+	router.get("/", eventcal.findAll);
 
-  // Retrieve a single events calendar with id
-  router.get("/:id", eventcal.findOne);
+	// Retrieve all users
+	router.get("/users", eventcal.findAllUsers);
 
-   // Retrieve events by user ID
-   router.get("/user/:userId", eventcal.findByUserIds);
+	// Retrieve a single events calendar with id
+	router.get("/:id", eventcal.findOne);
 
-  // Update a events calendar with id
-  router.put("/:id", eventcal.update);
+	// Retrieve events by user ID
+	router.get("/user/:userId", eventcal.findByUserIds);
 
-  // Delete a events calendar with id
-  router.delete("/:id", eventcal.delete);
+	// Update a events calendar with id
+	router.put("/:id", eventcal.update);
 
+	// Delete a events calendar with id
+	router.delete("/:id", eventcal.delete);
 
-  app.use('/api/calendars', router);
+	app.use("/api/calendars", router);
 };
