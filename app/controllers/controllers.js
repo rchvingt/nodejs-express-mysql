@@ -15,7 +15,7 @@ exports.create = (req, res) => {
 		title: req.body.title,
 		description: req.body.description,
 		date_start: req.body.date_start,
-		date_end: req.body.date_end,
+		date_end: req.body.date_start,
 		start_time: req.body.start_time,
 		end_time: req.body.end_time,
 	});
@@ -53,6 +53,34 @@ exports.findAll = (req, res) => {
 		});
 	});
 };
+
+// Retrieve all events calendar from the database (with filter).
+exports.eventsData = (req, res) => {
+	const title = req.query.title;
+
+	EventCal.getAll(title, (err, data) => {
+		if (err)
+			res.status(500).send({
+				status: false,
+				message: err.message || "Some error occurred while retrieving events calendar.",
+			});
+
+		// Contoh mengubah nama key di setiap event
+		const formattedData = data.map((event) => ({
+			id: event.id,
+			title: event.title,
+			start: event.date_start,
+			end: event.date_end,
+		}));
+
+		res.status(200).send({
+			success: true,
+			message: "list events calendar",
+			data: formattedData,
+		});
+	});
+};
+
 // Retrieve all users from the database (with filter).
 exports.findAllUsers = (req, res) => {
 	const title = req.query.title;

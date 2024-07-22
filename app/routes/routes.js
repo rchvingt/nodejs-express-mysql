@@ -1,5 +1,6 @@
 module.exports = (app) => {
 	const eventcal = require("../controllers/controllers.js");
+	const eventdata = require("../controllers/controllers.js");
 
 	var router = require("express").Router();
 
@@ -8,6 +9,9 @@ module.exports = (app) => {
 
 	// Retrieve all events calendar
 	router.get("/", eventcal.findAll);
+
+	// Retrieve eventsData
+	router.get("/events", eventcal.eventsData);
 
 	// Retrieve all users
 	router.get("/users", eventcal.findAllUsers);
