@@ -5,7 +5,8 @@ const EventCal = function (evcal) {
 	this.user_id = evcal.user_id;
 	this.title = evcal.title;
 	this.description = evcal.description;
-	this.date = evcal.date;
+	this.date_start = evcal.date_start;
+	this.date_end = evcal.date_end;
 	this.start_time = evcal.start_time;
 	this.end_time = evcal.end_time;
 };
@@ -114,8 +115,8 @@ EventCal.getAllUsers = (name, result) => {
 // manage update event by ID
 EventCal.updateById = (id, evcal, result) => {
 	sql.query(
-		"UPDATE events SET user_id = ?, title = ?, description = ?, date = ?, start_time = ?, end_time = ? WHERE id = ?",
-		[evcal.user_id, evcal.title, evcal.description, evcal.date, evcal.start_time, evcal.end_time, id],
+		"UPDATE events SET user_id = ?, title = ?, description = ?, date_start = ?, date_end = ?, start_time = ?, end_time = ? WHERE id = ?",
+		[evcal.user_id, evcal.title, evcal.description, evcal.date_start, evcal.date_end, evcal.start_time, evcal.end_time, id],
 		(err, res) => {
 			if (err) {
 				console.log("error: ", err);

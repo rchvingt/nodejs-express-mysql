@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.38, for macos14 (arm64)
+-- MySQL dump 10.13  Distrib 8.3.0, for macos14.2 (arm64)
 --
 -- Host: localhost    Database: calendar_app
 -- ------------------------------------------------------
@@ -27,14 +27,14 @@ CREATE TABLE `events` (
   `user_id` int DEFAULT NULL,
   `title` varchar(100) NOT NULL,
   `description` text,
-  `start_time` datetime NOT NULL,
-  `end_time` datetime NOT NULL,
+  `start_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `date` date DEFAULT NULL,
+  `date_start` date DEFAULT NULL,
+  `date_end` date DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `events_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
-INSERT INTO `events` VALUES (1,1,'Tim Meeting 56 UPDATE AGAINN','Discuss project status and next steps','2024-07-22 14:00:00','2024-07-22 14:00:00','2024-07-20 04:00:50','2024-07-22'),(5,1,'Tim Meeting 56 UPDATE AGAINN',NULL,'2024-07-22 14:00:00','2024-07-22 14:00:00','2024-07-20 06:55:19','2024-07-22'),(6,NULL,'Team Meeting 5',NULL,'2024-07-22 14:00:00','2024-07-22 14:00:00','2024-07-20 06:57:14','2024-07-20'),(7,NULL,'Team Meeting 6',NULL,'2024-07-22 14:00:00','2024-07-22 14:00:00','2024-07-20 07:01:17','2024-07-20'),(8,NULL,'Team Meeting 9',NULL,'2024-07-22 14:00:00','2024-07-22 14:00:00','2024-07-20 07:02:48','2024-07-20'),(9,NULL,'Team Meeting 99',NULL,'2024-07-22 14:00:00','2024-07-22 14:00:00','2024-07-20 07:07:50','2024-07-20'),(10,NULL,'Team Meeting 909',NULL,'2024-07-22 14:00:00','2024-07-22 14:00:00','2024-07-20 07:13:39','2024-07-20'),(11,NULL,'Client Presentation',NULL,'2024-07-22 14:00:00','2024-07-22 14:00:00','2024-07-20 07:25:27','2024-07-20'),(12,1,'Client Presentation 6','Present the project progress to the client','2024-07-22 14:00:00','2024-07-22 14:00:00','2024-07-20 07:27:48','2024-07-20');
+INSERT INTO `events` VALUES (1,1,'Team Meeting','Discuss project milestones','09:00:00','10:00:00','2024-07-22 02:48:01','2024-08-01','2024-08-01'),(3,3,'Product Launch','Launch new product line','14:00:00','15:00:00','2024-07-22 02:48:01','2024-08-03','2024-08-03'),(4,4,'Strategy Workshop','Work on annual strategy','10:00:00','12:00:00','2024-07-22 02:48:01','2024-08-04','2024-08-04'),(5,5,'Team Building','Team bonding activities','16:00:00','18:00:00','2024-07-22 02:48:01','2024-08-05','2024-08-05'),(6,1,'Client Presentation 6 Ubah','Present the project progress to the client','14:00:00','15:00:00','2024-07-22 02:50:50','2024-07-20','2024-07-20');
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,8 +60,9 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `name` varchar(255) NOT NULL DEFAULT 'USER',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +71,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'john_doe','john@example.com','hashedpassword1','2024-07-20 04:00:40'),(2,'jane_smith','jane@example.com','hashedpassword2','2024-07-20 04:00:40');
+INSERT INTO `users` VALUES (1,'john_doe','john@example.com','hashedpassword1','2024-07-20 04:00:40','John Doe'),(2,'jane_smith','jane@example.com','hashedpassword2','2024-07-20 04:00:40','Jane Smith'),(3,'johndoe','john@example.com','hashedpassword1','2024-07-22 02:47:42','John Doe'),(4,'janedoe','jane@example.com','hashedpassword2','2024-07-22 02:47:42','Jane Doe'),(5,'bobsmith','bob@example.com','hashedpassword3','2024-07-22 02:47:42','Bob Smith'),(6,'alicejohnson','alice@example.com','hashedpassword4','2024-07-22 02:47:42','Alice Johnson'),(7,'charliebrown','charlie@example.com','hashedpassword5','2024-07-22 02:47:42','Charlie Brown');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -83,4 +84,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-20 16:01:14
+-- Dump completed on 2024-07-22  9:55:37
