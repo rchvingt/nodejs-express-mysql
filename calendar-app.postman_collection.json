@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "cf4b434f-bb1c-4475-bacf-dd741ce7be98",
+		"name": "calendar-app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6854720"
+	},
+	"item": [
+		{
+			"name": "GET CALENDAR EVENT BYID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/api/calendars/6",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE CALENDAR EVENT",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/api/calendars/2",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET CALENDAR EVENTS",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/calendars",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET CALENDAR EVENTS ONLY",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/calendars/events",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET USERS OF CALENDAR EVENTS",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/calendars/users",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET CALENDAR EVENTS BY USERID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/calendars/user",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET CALENDAR EVENTS BY TITLE",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/calendars?title=review",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "review"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE CALENDAR EVENT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n        \n        \"user_id\": 1,\n        \"title\": \"Client Presentation 6\",\n        \"description\": \"Present the project progress to the client\",\n        \"start_time\": \"2024-07-22 14:00:00\",\n        \"end_time\": \"2024-07-22 14:00:00\",\n        \"date\": \"2024-07-20\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/calendars",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE CALENDAR EVENT",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \n        \"user_id\": 1,\n        \"description\": \"Update Client Presentation schedule\"\n        \n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/calendars/11",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars",
+						"11"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

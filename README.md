@@ -78,6 +78,18 @@ To set up and run this application, follow these steps:
       };
       ```
 
+## Postman Collection
+
+To test the backend API endpoints, use the provided Postman collection available in the root directory of this project.
+
+Collection file: `calendar-app.postman_collection.json`
+
+### How to Use
+
+1. Open Postman.
+2. Select `Import`.
+3. Choose the file `calendar-app.postman_collection.json` from the root directory.
+
 ### Handle MySQL Error
 
 if you find `Cannot GET /api/calendar` or `error:  Error: ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; consider upgrading MySQL client` when server is running, do this through mysql command:
