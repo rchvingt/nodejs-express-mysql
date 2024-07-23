@@ -15,7 +15,7 @@ exports.create = (req, res) => {
 		title: req.body.title,
 		description: req.body.description,
 		date_start: req.body.date_start,
-		date_end: req.body.date_start,
+		date_end: req.body.date_end,
 		start_time: req.body.start_time,
 		end_time: req.body.end_time,
 	});
@@ -65,7 +65,6 @@ exports.eventsData = (req, res) => {
 				message: err.message || "Some error occurred while retrieving events calendar.",
 			});
 
-		// Contoh mengubah nama key di setiap event
 		const formattedData = data.map((event) => ({
 			id: event.id,
 			title: event.title,

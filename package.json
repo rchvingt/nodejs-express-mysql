@@ -7,7 +7,7 @@
     "start": "node server",
     "dev": "npx nodemon server.js"
   },
-"keywords": [
+  "keywords": [
     "nodejs",
     "express",
     "mysql",
