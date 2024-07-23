@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.3.0, for macos14.2 (arm64)
 --
--- Host: localhost    Database: calendar_app
+-- Host: localhost    Database: calendar2
 -- ------------------------------------------------------
 -- Server version	8.0.38
 
@@ -43,7 +43,7 @@ CREATE TABLE `events` (
 
 LOCK TABLES `events` WRITE;
 /*!40000 ALTER TABLE `events` DISABLE KEYS */;
-INSERT INTO `events` VALUES (1,1,'Team Meeting','Discuss project milestones','09:00:00','10:00:00','2024-07-22 02:48:01','2024-08-01','2024-08-01'),(3,3,'Product Launch','Launch new product line','14:00:00','15:00:00','2024-07-22 02:48:01','2024-08-03','2024-08-03'),(4,4,'Strategy Workshop','Work on annual strategy','10:00:00','12:00:00','2024-07-22 02:48:01','2024-08-04','2024-08-04'),(5,5,'Team Building','Team bonding activities','16:00:00','18:00:00','2024-07-22 02:48:01','2024-08-05','2024-08-05'),(6,1,'Client Presentation 6 Ubah','Present the project progress to the client','14:00:00','15:00:00','2024-07-22 02:50:50','2024-07-20','2024-07-20');
+INSERT INTO `events` VALUES (1,1,'Early Team Meeting ',NULL,'09:00:00','10:00:00','2024-07-22 02:48:01','2024-08-01','2024-08-01'),(3,3,'Product Launch','Launch new product line','14:00:00','15:00:00','2024-07-22 02:48:01','2024-08-03','2024-08-03'),(4,4,'Strategy Workshop','Work on annual strategy','10:00:00','12:00:00','2024-07-22 02:48:01','2024-08-04','2024-08-04'),(5,5,'Prepare Team Building',NULL,'13:00:00','18:00:00','2024-07-22 02:48:01','2024-08-02','2024-08-05'),(6,1,'Client Presentation 6 Ubah','Present the project progress to the client','14:00:00','15:00:00','2024-07-22 02:50:50','2024-07-20','2024-07-20');
 /*!40000 ALTER TABLE `events` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,4 +84,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-22  9:55:37
+-- Dump completed on 2024-07-24  2:17:07
