@@ -98,6 +98,32 @@ exports.findAllUsers = (req, res) => {
 		});
 	});
 };
+// Retrieve events by selected persons
+exports.findByPersons = (req, res) => {
+	const personIds = req.body.personIds;
+
+	EventCal.getByPersons(personIds, (err, data) => {
+		if (err) {
+			res.status(500).send({
+				status: false,
+				message: err.message || "Some error occurred while retrieving events.",
+			});
+		} else {
+			const formattedData = data.map((event) => ({
+				id: event.id,
+				title: event.title,
+				start: event.date_start,
+				end: event.date_end,
+			}));
+			// res.send(data);
+			res.status(200).send({
+				success: true,
+				message: "list events calendar getByPersons",
+				data: formattedData,
+			});
+		}
+	});
+};
 
 // Find a single events calendar by Id
 exports.findOne = (req, res) => {

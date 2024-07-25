@@ -112,6 +112,22 @@ EventCal.getAllUsers = (name, result) => {
 	});
 };
 
+// Get events by selected persons
+EventCal.getByPersons = (personIds, result) => {
+	let placeholders = personIds.map(() => "?").join(",");
+	let query = `SELECT * FROM events WHERE user_id IN (${placeholders})`;
+
+	sql.query(query, personIds, (err, res) => {
+		if (err) {
+			console.log("error: ", err);
+			result(err, null);
+			return;
+		}
+		console.log("users: ", res);
+		result(null, res);
+	});
+};
+
 // manage update event by ID
 EventCal.updateById = (id, evcal, result) => {
 	sql.query(

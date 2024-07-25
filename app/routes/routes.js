@@ -15,6 +15,9 @@ module.exports = (app) => {
 	// Retrieve all users
 	router.get("/users", eventcal.findAllUsers);
 
+	// Retrieve events by selected persons
+	router.post("/persons", eventcal.findByPersons);
+
 	// Retrieve a single events calendar with id
 	router.get("/:id", eventcal.findOne);
 
