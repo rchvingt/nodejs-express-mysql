@@ -12,14 +12,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL}}/api/calendars/6",
+					"raw": "{{URL}}/api/calendars/3",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
 						"api",
 						"calendars",
-						"6"
+						"3"
 					]
 				}
 			},
@@ -168,6 +168,34 @@
 			"response": []
 		},
 		{
+			"name": "GET CALENDAR EVENTS BY MULTIPLE USERID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"personIds\": [1, 2, 3]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/calendars/persons",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars",
+						"persons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "GET CALENDAR EVENTS BY TITLE",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -185,7 +213,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL}}/api/calendars?title=review",
+					"raw": "{{URL}}/api/calendars?title=meeting",
 					"host": [
 						"{{URL}}"
 					],
@@ -196,7 +224,7 @@
 					"query": [
 						{
 							"key": "title",
-							"value": "review"
+							"value": "meeting"
 						}
 					]
 				}
@@ -207,10 +235,16 @@
 			"name": "CREATE CALENDAR EVENT",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "  {\n        \n        \"user_id\": 1,\n        \"title\": \"Client Presentation 6\",\n        \"description\": \"Present the project progress to the client\",\n        \"start_time\": \"2024-07-22 14:00:00\",\n        \"end_time\": \"2024-07-22 14:00:00\",\n        \"date\": \"2024-07-20\"\n    }",
+					"raw": "{\n    \"user_id\": 1,\n    \"title\": \"Design Review\",\n    \"description\": \"Review the new design proposals\",\n    \"date_start\": \"2024-07-01\",\n    \"date_end\": \"2024-07-01\",\n    \"start_time\": \"9:00:00\",\n    \"end_time\": \"12:00:00\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -231,13 +265,19 @@
 			"response": []
 		},
 		{
-			"name": "UPDATE CALENDAR EVENT",
+			"name": "CHECK EVENT CLASH",
 			"request": {
-				"method": "PUT",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \n        \"user_id\": 1,\n        \"description\": \"Update Client Presentation schedule\"\n        \n    }",
+					"raw": "\n{\n    \"userId\": 1,\n    \"startTime\": \"2024-07-27T17:00:00\",\n    \"endTime\": \"2024-07-27T17:00:00\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -245,14 +285,42 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL}}/api/calendars/11",
+					"raw": "{{URL}}/api/calendars/check-event-clash",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
 						"api",
 						"calendars",
-						"11"
+						"check-event-clash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE CALENDAR EVENT",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \n        \"user_id\": 1,\n        \"title\": \"Client Presentation 6 Ubah\",\n        \"description\": \"Present the project progress to the client\",\n        \"start_time\": \"14:00:00\",\n        \"end_time\": \"15:00:00\",\n        \"date_start\": \"2024-07-20\",\n        \"date_end\": \"2024-07-20\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/api/calendars/6",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"api",
+						"calendars",
+						"6"
 					]
 				}
 			},

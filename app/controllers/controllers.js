@@ -1,4 +1,23 @@
 const EventCal = require("../models/model.js");
+const moment = require("moment");
+
+// Check event clash
+exports.checkEventClash = (req, res) => {
+	const userId = req.body.user_id;
+	const newEventStartTime = moment.utc(req.body.date_start + "T" + req.body.start_time).format();
+	const newEventEndTime = moment.utc(req.body.date_end + "T" + req.body.end_time).format();
+
+	EventCal.checkEventClash(userId, newEventStartTime, newEventEndTime, (err, isClashing) => {
+		if (err) {
+			res.status(500).send({
+				message: "Error checking event clash",
+			});
+			return;
+		}
+
+		res.send({ isClashing });
+	});
+};
 
 // Create and Save a new events calendar
 exports.create = (req, res) => {
@@ -7,30 +26,55 @@ exports.create = (req, res) => {
 		res.status(400).send({
 			message: "Content can not be empty!",
 		});
+		return;
 	}
 
-	// Create a events calendar
+	// Create an events calendar
 	const evecal = new EventCal({
 		user_id: req.body.user_id,
 		title: req.body.title,
 		description: req.body.description,
-		date_start: req.body.date_start,
-		date_end: req.body.date_end,
-		start_time: req.body.start_time,
-		end_time: req.body.end_time,
+		date_start: moment.utc(req.body.date_start).format("YYYY-MM-DD"),
+		date_end: moment.utc(req.body.date_end).format("YYYY-MM-DD"),
+		start_time: moment.utc(req.body.start_time, "HH:mm:ss").format("HH:mm:ss"),
+		end_time: moment.utc(req.body.end_time, "HH:mm:ss").format("HH:mm:ss"),
 	});
 
-	// Save events calendar in the database
-	EventCal.create(evecal, (err, data) => {
-		if (err)
+	// Check for event clash
+	let userId = evecal.user_id;
+	let startTime = `${evecal.date_start}T${evecal.start_time}`;
+	let endTime = `${evecal.date_end}T${evecal.end_time}`;
+	console.log(`Checking event clash for user ${userId} from ${startTime} to ${endTime}`);
+
+	EventCal.checkEventClash(userId, startTime, endTime, (err, isClashing) => {
+		if (err) {
 			res.status(500).send({
-				status: false,
-				message: err.message || "Some error occurred while creating the events calendar.",
+				message: "Error checking event clash",
 			});
-		res.status(200).send({
-			success: true,
-			message: "Events created!",
-			data,
+			return;
+		}
+
+		if (isClashing) {
+			res.status(400).send({
+				message: "Event clash detected, please choose a different time",
+			});
+			return;
+		}
+
+		// Save the event if no clash
+		EventCal.create(evecal, (err, data) => {
+			if (err) {
+				res.status(500).send({
+					status: false,
+					message: err.message || "Some error occurred while creating the events calendar.",
+				});
+				return;
+			}
+			res.status(200).send({
+				success: true,
+				message: "Events created!",
+				data,
+			});
 		});
 	});
 };
@@ -65,11 +109,17 @@ exports.eventsData = (req, res) => {
 				message: err.message || "Some error occurred while retrieving events calendar.",
 			});
 
+		// const formattedData = data.map((event) => ({
+		// 	id: event.id,
+		// 	title: event.title,
+		// 	start: event.date_start.toISOString(),
+		// 	end: event.date_end.toISOString(),
+		// }));
 		const formattedData = data.map((event) => ({
 			id: event.id,
 			title: event.title,
-			start: event.date_start,
-			end: event.date_end,
+			start: moment.utc(event.date_start).format(), // ISO 8601 format
+			end: moment.utc(event.date_end).format(), // ISO 8601 format
 		}));
 
 		res.status(200).send({

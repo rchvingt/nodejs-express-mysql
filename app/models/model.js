@@ -114,8 +114,8 @@ EventCal.getAllUsers = (name, result) => {
 
 // Get events by selected persons
 EventCal.getByPersons = (personIds, result) => {
-	let placeholders = personIds.map(() => "?").join(",");
-	let query = `SELECT * FROM events WHERE user_id IN (${placeholders})`;
+	let iDs = personIds.map(() => "?").join(",");
+	let query = `SELECT * FROM events WHERE user_id IN (${iDs})`;
 
 	sql.query(query, personIds, (err, res) => {
 		if (err) {
@@ -172,4 +172,34 @@ EventCal.remove = (id, result) => {
 	});
 };
 
+// Check for event clash
+EventCal.checkEventClash = (userId, newEventStartTime, newEventEndTime, result) => {
+	const query = `
+        SELECT * FROM events
+        WHERE user_id = ?
+        AND (
+            (CONCAT(date_start, 'T', start_time) < ? AND CONCAT(date_end, 'T', end_time) > ?)
+            OR
+            (CONCAT(date_start, 'T', start_time) <= ? AND CONCAT(date_end, 'T', end_time) >= ?)
+        )
+    `;
+
+	const params = [userId, newEventEndTime, newEventStartTime, newEventStartTime, newEventEndTime];
+	console.log("Running query checkEventClash:", query);
+	console.log("With parameters:", params);
+	sql.query(query, params, (err, res) => {
+		if (err) {
+			console.log("error: ", err);
+			result(err, null);
+			return;
+		}
+
+		if (res.length) {
+			result(null, true); // There is a clash
+			return;
+		}
+
+		result(null, false); // No clash
+	});
+};
 module.exports = EventCal;

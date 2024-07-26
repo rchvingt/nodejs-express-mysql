@@ -30,5 +30,8 @@ module.exports = (app) => {
 	// Delete a events calendar with id
 	router.delete("/:id", eventcal.delete);
 
+	// Route to check event clash
+	router.post("/check-event-clash", eventcal.checkEventClash);
+
 	app.use("/api/calendars", router);
 };
