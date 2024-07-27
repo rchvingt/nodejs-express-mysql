@@ -67,15 +67,14 @@ To set up and run this application, follow these steps:
 
       **Change config of the Database**
 
-      The database configuration is managed in the `app/config/db.config.js` file. This file contains the necessary settings to connect to your MySQL database. Open the `app/config/db.config.js` file and update the following settings according to your database setup:
+      Add in your own database setup inside the .env file
 
-      ```javascript
-      module.exports = {
-      	HOST: "localhost",
-      	USER: "root",
-      	PASSWORD: "password",
-      	DB: "my_database",
-      };
+      ```env
+      # DATABASE CONNECTION ENVIRONMENT VARIABLES
+      MYSQL_HOST = ""
+      MYSQL_USER = ""
+      MYSQL_PASSWORD = ""
+      MYSQL_DATABASE = ""
       ```
 
 ## Postman Collection
