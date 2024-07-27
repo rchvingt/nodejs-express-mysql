@@ -6,10 +6,25 @@ const cors = require("cors");
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
 
-var corsOptions = {
-	origin: "http://localhost:3001",
+// List of allowed origins
+const allowedOrigins = [
+	"http://localhost:3001", // Local development
+	"https://calendar-event-client.vercel.app", // Deployed frontend
+];
+
+// CORS options
+const corsOptions = {
+	origin: function (origin, callback) {
+		// Allow requests with no origin (like mobile apps or curl requests)
+		if (!origin) return callback(null, true);
+		if (allowedOrigins.includes(origin)) {
+			return callback(null, true);
+		} else {
+			return callback(new Error("Not allowed by CORS"));
+		}
+	},
 	credentials: true, //access-control-allow-credentials:true
-	optionSuccessStatus: 200,
+	optionsSuccessStatus: 200,
 };
 
 // middleware
