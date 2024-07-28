@@ -300,7 +300,7 @@ exports.delete = (req, res) => {
 		} else {
 			res.status(200).send({
 				success: true,
-				message: "Event calendar was deleted!",
+				message: "Event deleted!",
 			});
 		}
 	});

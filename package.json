@@ -13,7 +13,7 @@
 		"mysql",
 		"restapi"
 	],
-	"author": "",
+	"author": "rchvingt",
 	"license": "ISC",
 	"description": "",
 	"dependencies": {
