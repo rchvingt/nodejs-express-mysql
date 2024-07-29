@@ -6,6 +6,9 @@ module.exports = (app) => {
 	// Create a new events calendar
 	router.post("/", eventcal.create);
 
+	// Post events by selected persons
+	router.post("/persons", eventcal.findByPersons);
+
 	// Retrieve all events calendar
 	router.get("/", eventcal.findAll);
 
@@ -15,14 +18,11 @@ module.exports = (app) => {
 	// Retrieve all users
 	router.get("/users", eventcal.findAllUsers);
 
-	// Retrieve events by selected persons
-	router.post("/persons", eventcal.findByPersons);
-
 	// Retrieve a single events calendar with id
 	router.get("/:id", eventcal.findOne);
 
-	// Retrieve events by user ID
-	router.get("/user/:userId", eventcal.findByUserIds);
+	// Retrieve events by user IDs
+	router.get("/user/:userId", eventcal.findEventByUserId);
 
 	// Update a events calendar with id
 	router.put("/:id", eventcal.update);

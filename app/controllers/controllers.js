@@ -1,3 +1,5 @@
+// UPDATE 300724: Updated `checkEventClash` method to handle event clash detection with and without an event ID.
+
 const EventCal = require("../models/model.js");
 const moment = require("moment");
 
@@ -6,13 +8,13 @@ const convertTo24Hour = (time) => {
 	return moment(time, "hh:mm:ss a").format("HH:mm:ss");
 };
 
-// Check event clash
 exports.checkEventClash = (req, res) => {
 	const userId = req.body.user_id;
 	const newEventStartTime = moment.utc(req.body.date_start + "T" + req.body.start_time).format();
 	const newEventEndTime = moment.utc(req.body.date_end + "T" + req.body.end_time).format();
+	const eventID = req.body.id;
 
-	EventCal.checkEventClash(userId, newEventStartTime, newEventEndTime, (err, isClashing) => {
+	EventCal.checkEventClash(userId, newEventStartTime, newEventEndTime, eventID, (err, isClashing) => {
 		if (err) {
 			res.status(500).send({
 				message: "Error checking event clash",
@@ -50,7 +52,7 @@ exports.create = (req, res) => {
 	let startTime = `${evecal.date_start}T${evecal.start_time}`;
 	let endTime = `${evecal.date_end}T${evecal.end_time}`;
 
-	EventCal.checkEventClash(userId, startTime, endTime, (err, isClashing) => {
+	EventCal.checkEventClash(userId, startTime, endTime, null, (err, isClashing) => {
 		if (err) {
 			res.status(500).send({
 				message: "Error checking event clash",
@@ -83,6 +85,74 @@ exports.create = (req, res) => {
 	});
 };
 
+exports.update = (req, res) => {
+	// Validate Request
+	if (!req.body) {
+		res.status(400).send({
+			status: false,
+			message: "Content can not be empty!",
+		});
+		return;
+	}
+
+	// Create an events calendar
+	const upd = {
+		user_id: req.body.user_id,
+		title: req.body.title,
+		description: req.body.description,
+		date_start: moment.utc(req.body.date_start).format("YYYY-MM-DD"),
+		date_end: moment.utc(req.body.date_end).format("YYYY-MM-DD"),
+		start_time: convertTo24Hour(req.body.start_time),
+		end_time: convertTo24Hour(req.body.end_time),
+	};
+
+	const userId = req.body.user_id;
+	const newEventStartTime = `${upd.date_start}T${upd.start_time}`;
+	const newEventEndTime = `${upd.date_end}T${upd.end_time}`;
+	const eventID = req.params.id;
+
+	// Check for event clashes
+	EventCal.checkEventClash(userId, newEventStartTime, newEventEndTime, eventID, (err, isClashing) => {
+		if (err) {
+			res.status(500).send({
+				status: false,
+				message: "Error checking event clash",
+			});
+			return;
+		}
+
+		if (isClashing) {
+			res.status(400).send({
+				status: false,
+				message: "Event times clash with an existing event",
+			});
+			return;
+		}
+
+		// Proceed with updating the event
+		EventCal.updateById(eventID, upd, (err, data) => {
+			if (err) {
+				if (err.kind === "not_found") {
+					res.status(404).send({
+						status: false,
+						message: `EventCal.updateById Not found events calendar with id ${req.params.id}.`,
+					});
+				} else {
+					res.status(500).send({
+						status: false,
+						message: "Error updating events calendar with id " + req.params.id,
+					});
+				}
+			} else {
+				res.status(200).send({
+					success: true,
+					message: "Event Updated!",
+					data,
+				});
+			}
+		});
+	});
+};
 // Retrieve all events calendar from the database (with filter).
 exports.findAll = (req, res) => {
 	const title = req.query.title;
@@ -113,12 +183,6 @@ exports.eventsData = (req, res) => {
 				message: err.message || "Some error occurred while retrieving events calendar.",
 			});
 
-		// const formattedData = data.map((event) => ({
-		// 	id: event.id,
-		// 	title: event.title,
-		// 	start: event.date_start.toISOString(),
-		// 	end: event.date_end.toISOString(),
-		// }));
 		const formattedData = data.map((event) => ({
 			id: event.id,
 			title: event.title,
@@ -204,142 +268,27 @@ exports.findOne = (req, res) => {
 	});
 };
 
-exports.findByUserIds = (req, res) => {
-	const userIds = req.query.userIds;
-
-	if (!userIds) {
-		res.status(400).send({
-			status: false,
-			message: "No userIDs provided.",
-		});
-		return;
-	}
-
-	const userIdArray = userIds
-		.split(",")
-		.map((id) => parseInt(id, 10))
-		.filter((id) => !isNaN(id));
-
-	if (userIdArray.length === 0) {
-		res.status(400).send({
-			status: false,
-			message: "Invalid userIDs provided.",
-		});
-		return;
-	}
-
-	EventCal.findByUserIds(userIdArray, (err, data) => {
+exports.findEventByUserId = (req, res) => {
+	EventCal.findEventByUserId(req.params.userId, (err, data) => {
 		if (err) {
 			if (err.kind === "not_found") {
 				res.status(404).send({
 					status: false,
-					message: `No events found for user IDs ${userIds}.`,
+					message: `Not found events calendar with user_id ${req.params.userId}.`,
 				});
 			} else {
 				res.status(500).send({
 					status: false,
-					message: "Error retrieving events for user IDs " + userIds,
+					message: "Error retrieving events calendar with user_id " + req.params.userId,
 				});
 			}
 		} else {
 			res.status(200).send({
 				success: true,
-				message: "Events found",
+				message: "found events calendar",
 				data,
 			});
 		}
-	});
-};
-
-// Update a events calendar identified by the id in the request
-exports.updateX = (req, res) => {
-	// Validate Request
-	if (!req.body) {
-		res.status(400).send({
-			status: false,
-			message: "Content can not be empty!",
-		});
-	}
-
-	// console.log(req.body);
-
-	EventCal.updateById(req.params.id, new EventCal(req.body), (err, data) => {
-		if (err) {
-			if (err.kind === "not_found") {
-				res.status(404).send({
-					status: false,
-					message: `Not found events calendar with id ${req.params.id}.`,
-				});
-			} else {
-				res.status(500).send({
-					status: false,
-					message: "Error updating events calendar with id " + req.params.id,
-				});
-			}
-		} else {
-			res.status(200).send({
-				success: true,
-				message: "Event Updated!",
-				data,
-			});
-		}
-	});
-};
-
-exports.update = (req, res) => {
-	// Validate Request
-	if (!req.body) {
-		res.status(400).send({
-			status: false,
-			message: "Content can not be empty!",
-		});
-		return;
-	}
-
-	let userId = req.body.user_id;
-	let startTime = `${req.body.date_start}T${req.body.start_time}`;
-	let endTime = `${req.body.date_end}T${req.body.end_time}`;
-
-	// Check for event clashes
-	EventCal.checkEventClash(userId, startTime, endTime, (err, isClashing) => {
-		if (err) {
-			res.status(500).send({
-				status: false,
-				message: "Error checking event clash",
-			});
-			return;
-		}
-
-		if (isClashing) {
-			res.status(400).send({
-				status: false,
-				message: "Event clash with an existing event, choose another time",
-			});
-			return;
-		}
-
-		// Proceed with updating the event
-		EventCal.updateById(req.params.id, new EventCal(req.body), (err, data) => {
-			if (err) {
-				if (err.kind === "not_found") {
-					res.status(404).send({
-						status: false,
-						message: `EventCal.updateById Not found events calendar with id ${req.params.id}.`,
-					});
-				} else {
-					res.status(500).send({
-						status: false,
-						message: "Error updating events calendar with id " + req.params.id,
-					});
-				}
-			} else {
-				res.status(200).send({
-					success: true,
-					message: "Event Updated!",
-					data,
-				});
-			}
-		});
 	});
 };
 

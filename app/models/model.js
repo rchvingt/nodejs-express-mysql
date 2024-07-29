@@ -20,14 +20,16 @@ EventCal.create = (nuEvent, result) => {
 			return;
 		}
 
-		console.log("created events calendar: ", { id: res.insertId, ...nuEvent });
+		// console.log("created events calendar: ", { id: res.insertId, ...nuEvent });
 		result(null, { id: res.insertId, ...nuEvent });
 	});
 };
 
-// manage filter event by ID
+// manage filter event by eventID
 EventCal.findById = (id, result) => {
-	sql.query(`SELECT * FROM events WHERE id = ${id}`, (err, res) => {
+	const query = `SELECT * FROM events WHERE id = ?`;
+
+	sql.query(query, [id], (err, res) => {
 		if (err) {
 			console.log("error: ", err);
 			result(err, null);
@@ -45,15 +47,10 @@ EventCal.findById = (id, result) => {
 	});
 };
 
-// manage filter event by userIDs
-EventCal.findByUserIds = (userIds, result) => {
-	// convert array of userIDs to a comma-separated string
-	const userIdsString = userIds.join(",");
-
-	// Create the SQL query with the IN clause
-	const query = `SELECT * FROM events WHERE user_id IN (${userIdsString})`;
-
-	sql.query(query, (err, res) => {
+// manage filter event by single userID
+EventCal.findEventByUserId = (userId, result) => {
+	const query = `SELECT * FROM events WHERE user_id = ?`;
+	sql.query(query, [userId], (err, res) => {
 		if (err) {
 			console.log("error: ", err);
 			result(err, null);
@@ -61,12 +58,13 @@ EventCal.findByUserIds = (userIds, result) => {
 		}
 
 		if (res.length) {
-			console.log("found events: ", res);
+			console.log("EventCal.findEventByUserId", res.length);
+			// console.log("found events calendar findEventByUserId: ", res);
 			result(null, res);
 			return;
 		}
 
-		// not found events calendar with the userIDs
+		// not found events calendar with the id
 		result({ kind: "not_found" }, null);
 	});
 };
@@ -173,8 +171,8 @@ EventCal.remove = (id, result) => {
 };
 
 // Check for event clash
-EventCal.checkEventClash = (userId, newEventStartTime, newEventEndTime, result) => {
-	const query = `
+EventCal.checkEventClash = (userId, newEventStartTime, newEventEndTime, eventId, result) => {
+	let query = `
         SELECT * FROM events
         WHERE user_id = ?
         AND (
@@ -183,10 +181,13 @@ EventCal.checkEventClash = (userId, newEventStartTime, newEventEndTime, result) 
             (CONCAT(date_start, 'T', start_time) <= ? AND CONCAT(date_end, 'T', end_time) >= ?)
         )
     `;
-
 	const params = [userId, newEventEndTime, newEventStartTime, newEventStartTime, newEventEndTime];
-	console.log("Running query checkEventClash:", query);
-	console.log("With parameters:", params);
+
+	if (eventId) {
+		query += ` AND id != ?`;
+		params.push(eventId);
+	}
+
 	sql.query(query, params, (err, res) => {
 		if (err) {
 			console.log("error: ", err);
@@ -202,4 +203,5 @@ EventCal.checkEventClash = (userId, newEventStartTime, newEventEndTime, result) 
 		result(null, false); // No clash
 	});
 };
+
 module.exports = EventCal;
